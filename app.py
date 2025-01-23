@@ -6,7 +6,6 @@ import os
 from crewai import Agent, Task, Crew, Process
 from crewai_tools import WebsiteSearchTool, SerperDevTool
 import MySQLdb.cursors 
-import markdown2
 from flask import send_file
 from functools import wraps
 from pathlib import Path
@@ -15,9 +14,10 @@ import pdfkit
 from langchain_openai import ChatOpenAI
 from openai import OpenAI
 import requests
+from dotenv import load_dotenv
 
-
-os.environ["OPENAI_API_KEY"] = ""
+load_dotenv()
+openai_key = os.getenv("OPENAI_API_KEY")
 os.environ["SERPER_API_KEY"] = "966f510dc332f3fc6db2bb39af3e4c90685ccb50" # serper.dev API key
 
 
@@ -29,7 +29,7 @@ serper_tool = SerperDevTool()
 
 gpt_4_mini = ChatOpenAI(
     model = "gpt-4o-mini",
-    openai_api_key=os.environ["OPENAI_API_KEY"]
+    openai_api_key=openai_key
 )
 
 llama = ChatOpenAI(
