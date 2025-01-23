@@ -1,0 +1,1 @@
+**Documento Preliminar do Projeto** com estruturação inicial, incluindo descrição do problema, objetivos gerais e específicos, metodologia de execução e cronograma preliminar.

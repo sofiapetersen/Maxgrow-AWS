@@ -1,0 +1,1 @@
+Aqui estão os três posts para blog e o e-book correspondente, que abordam de forma abrangente os temas de design thinking e inteligência artificial, alinhados com as orientações do briefing.

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento do Crew IA</title>
+    <link rel="icon" type="image/png" href="/static/images/icons/favicon.ico"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <style>
+        /* Estilos personalizados */
+        .custom-table td {
+            padding: 10px;
+        }
+
+        .custom-table h3 {
+            margin-bottom: 0;
+        }
+
+        .custom-table ul {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .custom-table li {
+            border: 1px solid #2c2c2c;
+            padding: 10px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease, color 0.3s ease; 
+        }
+
+        .custom-table li:hover {
+            background-color: #1c1c1c;
+            color: white; 
+        }
+        .table td a {
+            color: #ffffff; 
+            text-decoration: none;
+            font-size: 15px;
+          }
+          
+
+    </style>
+</head>
+<body>
+<header class="header d-flex justify-content-between align-items-center">
+    <h1>Max Grow - Dashboard</h1>
+    <div class="dropdown">
+        <a class="dropdown-toggle user-dropdown" href="#" role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+            Olá, <span id="user-name">{{ user_name }}</span>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownUser">
+            <li><a class="dropdown-item" href="/logout">Sair da conta</a></li>
+        </ul>
+    </div>
+</header>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar">
+                <a href="dashboard#home">Página Inicial</a>
+                <a href="/questionarios">Questionários</a>
+                <a href="/crew_manager">Times IA</a>
+                <a href="/chat">Crew Chat</a>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <br>
+                <h2>Gerenciamento do Crew IA</h2>
+                <br>
+                <div class="table-responsive-crew">
+                    <table class="table custom-table">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h3>Agentes</h3>
+                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#agentsFormModal">+</button>
+                                    </div>
+                                    <ul id="agents-list">
+                                    </ul>
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h3>Tarefas</h3>
+                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#tasksFormModal">+</button>
+                                    </div>
+                                    <ul id="tasks-list">
+                                    </ul>
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h3>Crews</h3>
+                                        <a href="/create_crew" class="btn btn-sm btn-primary">+</a>
+                                    </div>
+                                    <ul id="crews-list">
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal para Agentes -->
+    <div class="modal fade" id="agentsFormModal" tabindex="-1" aria-labelledby="agentsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="agentsModalLabel">Adicionar Agente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="create-agent-form">
+                        <div class="mb-3">
+                            <label for="name_agent" class="form-label">Nome do Agente</label>
+                            <input type="text" class="form-control" id="name_agent" name="name_agent" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="role_agent" class="form-label">Papel</label>
+                            <input type="text" class="form-control" id="role_agent" name="role_agent" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="backstory_agent" class="form-label">História</label>
+                            <textarea class="form-control" id="backstory_agent" name="backstory_agent" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="goal_agent" class="form-label">Objetivo</label>
+                            <textarea class="form-control" id="goal_agent" name="goal_agent" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Criar Agente</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Tarefas -->
+    <div class="modal fade" id="tasksFormModal" tabindex="-1" aria-labelledby="tasksModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tasksModalLabel">Adicionar Tarefa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="create-task-form">
+                        <div class="mb-3">
+                            <label for="task_name" class="form-label">Nome da Tarefa</label>
+                            <input type="text" class="form-control" id="task_name" name="task_name" required>
+                            
+                            <label for="task_description" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="task_description" name="task_description" required></textarea>
+                            
+                            <label for="task_expected_output" class="form-label">Resultado Esperado</label>
+                            <textarea class="form-control" id="task_expected_output" name="task_expected_output" required></textarea>
+                            
+                            <label for="agent_task" class="form-label">Selecionar Agente</label>
+                            <select class="form-select" id="agent_task" name="agent_id" required>
+                                <option value="" disabled selected>Escolha um agente</option>
+                                <!-- As opções serão preenchidas dinamicamente -->
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Exibir Informações do Agente -->
+    <div class="modal fade" id="agentsModal" tabindex="-1" aria-labelledby="agentsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="agentsModalLabel">Informações do Agente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Conteúdo dinâmico será inserido aqui -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Exibir Informações da Tarefa -->
+    <div class="modal fade" id="tasksModal" tabindex="-1" aria-labelledby="tasksModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tasksModalLabel">Informações da Tarefa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Conteúdo dinâmico será inserido aqui -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/crew_manager.js"></script>
+</body>
+</html>

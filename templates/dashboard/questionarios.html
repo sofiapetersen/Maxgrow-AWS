@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionários</title>
+    <link rel="icon" type="image/png" href="/static/images/icons/favicon.ico"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <style>
+    
+      .table-responsive-pdf {
+          width: 100%;
+          border-collapse: collapse;
+          border-radius: 8px;
+          overflow: hidden;
+      }
+      
+      
+      .table-responsive-pdf td a {
+          display: block; 
+          padding: 15px; 
+          color: #F7CE00;
+      }
+      
+      
+      .table-responsive-pdf td {
+          white-space: nowrap; 
+          text-align: left; 
+      }
+      
+      .table-responsive-pendente {
+          width: 100%;
+          border-collapse: collapse;
+          border-radius: 8px;
+          overflow: hidden;
+      }
+      
+      
+      .table-responsive-pendente td a {
+          display: block; 
+          padding: 15px; 
+          color: red;
+      }
+      
+      
+      .table-responsive-pendente td {
+          white-space: nowrap; 
+          text-align: left; 
+      }
+
+      .table-responsive td a {
+        color: #57b846;
+        text-decoration: none;
+      }
+
+    </style>
+</head>
+<body>
+<header class="header d-flex justify-content-between align-items-center">
+    <h1>Max Grow - Dashboard</h1>
+    <div class="dropdown">
+        <a class="dropdown-toggle user-dropdown" href="#" role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+            Olá, <span id="user-name">{{ user_name }}</span>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownUser">
+            <li><a class="dropdown-item" href="/logout">Sair da conta</a></li>
+        </ul>
+    </div>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar">
+            <a href="/dashboard">Página Inicial</a>
+            <a href="/questionarios">Questionários</a>
+            <a href="/crew_manager">Times IA</a>
+            <a href="/chat">Crew Chat</a>
+        </nav>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <br>
+            <h2>Questionários por Empresa 
+                <button onclick="window.location.href='/nova_resposta'" class="btn btn-primary float-end">Adicionar Resposta</button>
+            </h2>
+            
+            <br>
+
+            <!-- Lista de Pendentes -->
+            <h4>Respostas Pendentes</h4>
+            <div class="table-responsive-pendente">
+                {% if pendentes %}
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            {% for empresa in pendentes %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ url_for('empresa', nome=empresa) }}">{{ empresa }}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>Nenhuma empresa pendente.</p>
+                {% endif %}
+            </div>
+            
+            <h4>Respostas Executadas</h4>
+            <div class="table-responsive-pdf">
+                {% if pdf_pendente %}
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            {% for empresa in pdf_pendente %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ url_for('empresa', nome=empresa) }}">{{ empresa }}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>Nenhuma resposta pendente.</p>
+                {% endif %}
+            </div>
+
+                        <!-- Lista de Já Enviados -->
+                        <h4>Respostas Finalizadas</h4>
+                        <div class="table-responsive">
+                            {% if enviados %}
+                                <table class="table table-bordered table-hover">
+                                    <tbody>
+                                        {% for empresa in enviados %}
+                                            <tr>
+                                                <td>
+                                                    <a href="{{ url_for('empresa', nome=empresa) }}">{{ empresa }}</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <p>Nenhuma resposta finalizada.</p>
+                            {% endif %}
+                        </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/scripts.js"></script>
+<script src="/static/js/questionarios.js"></script>
+</body>
+</html>

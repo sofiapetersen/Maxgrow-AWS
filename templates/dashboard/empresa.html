@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionários da {{empresa}}</title>
+    <link rel="icon" type="image/png" href="/static/images/icons/favicon.ico"/>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <style>
+        .enviado {
+            display: inline-block;
+            background-color: red;
+            color: white;
+            padding: 0.2em 0.5em;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<header class="header d-flex justify-content-between align-items-center">
+    <h1>Max Grow - Dashboard</h1>
+    <div class="dropdown">
+        <a class="dropdown-toggle user-dropdown" href="#" role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+            Olá, <span id="user-name">{{ user_name }}</span>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownUser">
+            <li><a class="dropdown-item" href="/logout">Sair da conta</a></li>
+        </ul>
+    </div>
+</header>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Menu Lateral -->
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar">
+                <a href="dashboard#home">Página Inicial</a>
+                <a href="/questionarios">Questionários</a>
+                <a href="/crew_manager">Times IA</a>
+                <a href="/chat">Crew Chat</a>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <br>
+                <h1>Formulários enviados pela empresa: {{ empresa }}</h1>
+                <br>
+
+                {% if formularios %}
+                <div>
+                    {% for formulario in formularios %}
+                    <form action="/editar_formulario/{{ formulario[0] }}/{{ formulario[1] }}" method="POST">
+                        <input type="hidden" name="empresa" value="{{ empresa }}">
+                        <p>
+                            <span style="color: #57b846;">Formulário ID:</span> {{ formulario[0] }}
+                            <span id="status-{{ formulario[0] }}" class="status">
+                                {% if formulario[-2] == 1 %} 
+                                    <span class="enviado">Crew Executado</span>
+                                {% endif %}
+                            </span>
+                        </p>
+                        <p>
+                            <span style="color: #57b846;">Email:</span> {{ formulario[1] }}
+                        </p>
+                        
+                        {% for i in range(2, 12) %}
+                            {% if formulario[i] is not none and formulario[i] != "" %}
+                            <p>
+                                <span style="color: #57b846;">Pergunta {{ loop.index }}:</span>
+                                <textarea name="pergunta{{ loop.index }}" class="form-control" rows="3">{{ formulario[i] }}</textarea>
+                            </p>
+                            
+                            {% endif %}
+                        {% endfor %}
+                        <div class="botoes">
+                            <button type="submit" class="btn btn-primary" onclick="mostrarMensagem()">Salvar Alterações</button>
+                            <button type="button" class="btn btn-secondary" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#crewModal" 
+                                    data-form-id="{{ formulario[0] }}" 
+                                    data-email="{{ formulario[1] }}">
+                                Executar o Crew
+                            </button>
+                            <a href="javascript:void(0);" class="btn btn-primary" onclick="downloadPDF('{{ formulario[0] }}', '{{ formulario[1] }}')">Baixar PDF</a>
+                            <span id="status-{{ formulario[0] }}" class="status">
+                                {% if formulario[-1] == 1 %} 
+                                    <span class="enviado">PDF Baixado</span>
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <hr>
+                    </form>
+                    {% endfor %}
+                </div>
+                {% else %}
+                    <p>Nenhum formulário encontrado para esta empresa.</p>
+                {% endif %}
+            </main>       
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="crewModal" tabindex="-1" aria-labelledby="crewModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="crewModalLabel">Selecione o Crew para Executar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="crewSelectionForm">
+                        <div class="mb-3">
+                            <label for="crewSelect" class="form-label">Crew</label>
+                            <select id="crewSelect" class="form-select">
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/questionarios.js"></script>
+    <script>
+    
+      function downloadPDF(idSurvey, email) {
+        fetch(`/download_pdf/${idSurvey}/${email}`)
+            .then(response => {
+                if (response.ok) {
+                    return response.blob();
+                } else {
+                    throw new Error("Crew não executado para este formulário");
+                }
+            })
+            .then(blob => {
+                // Criando o link para download
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Resultado_${idSurvey}_${email}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            })
+            .catch(error => {
+                alert(error.message);  // Mostra o alerta caso o PDF não tenha sido gerado
+            });
+    }
+    
+    </script>
+</body>
+</html>

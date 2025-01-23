@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="icon" type="image/png" href="/static/images/icons/favicon.ico"/>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+<!-- Cabeçalho -->
+<header class="header d-flex justify-content-between align-items-center">
+    <h1>Max Grow - Dashboard</h1>
+    <h6>Versão 3.0</h6>
+    <div class="dropdown">
+        <a class="dropdown-toggle user-dropdown" href="#" role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+            Olá, <span id="user-name">{{ user_name }}</span>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownUser">
+            <li><a class="dropdown-item" href="/logout">Sair da conta</a></li>
+        </ul>
+    </div>
+</header>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Menu Lateral -->
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar">
+            <a href="#home">Página Inicial</a>
+            <a href="/questionarios">Questionários</a>
+            <a href="/crew_manager">Times IA</a>
+            <a href="/chat">Crew Chat</a>
+        </nav>
+
+        <!-- Conteúdo Principal -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 content">
+            <div id="home" class="mb-4">
+                <h2>Página Inicial</h2>
+                <div class="row">
+                    <!-- Coluna com as respostas na Evolutto -->
+                    <div class="col-md-6">
+                        <!-- Botão para Enviar para o Banco de Dados -->
+                        <button class="btn-custom mt-3" id="enviar-banco">
+                            Enviar para o Banco de Dados
+                        </button>
+                        <br>
+                        <div class="dynamic-box" id="evolutto-respostas">
+                            <h2>Respostas na Evolutto</h2>
+                            <table id="tabela-respostas">
+                                <thead>
+                                    <tr>
+                                        <th>Empresas</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Coluna para adicionar novo Survey ID -->
+                    <div class="col-md-6">
+                        <div class="dynamic-box" id="add-survey">
+                            <h2>Adicionar Novo Questinário</h2>
+                            <form id="form-add-survey">
+                                <input type="text" class="form-control" id="id_survey" required placeholder="Digite o ID Survey">
+                                <button class="btn-custom mt-3" type="submit">Adicionar ID Survey</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="respostas-empresa" class="container" style="display: none;">
+            </div>
+            
+            <div id="questionários-db" class="container" style="display: none;">
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/scripts.js"></script>
+</body>
+</html>
