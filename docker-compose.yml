@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   app:
     build:
@@ -12,5 +10,3 @@ services:
       - ./db:/app/db 
       - ./templates:/app/templates
       - ./static:/app/static  
-    depends_on:
-      - db 
