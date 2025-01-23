@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: . 
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000" 
+    volumes:
+      - ./outputs:/app/outputs 
+      - ./db:/app/db 
+      - ./templates:/app/templates
+      - ./static:/app/static  
+    depends_on:
+      - db 
