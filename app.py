@@ -23,7 +23,6 @@ os.environ["SERPER_API_KEY"] = "966f510dc332f3fc6db2bb39af3e4c90685ccb50" # serp
 app = Flask(__name__)
 app.secret_key = 'sua_chave_secreta'
 
-web_search_tool = WebsiteSearchTool()
 serper_tool = SerperDevTool()
 
 gpt_4_mini = ChatOpenAI(
@@ -996,7 +995,7 @@ def create_agents_and_tasks_for_crew(crew_name):
             role=agent_data['role_agent'],
             goal=agent_data['goal_agent'],
             backstory=agent_data['backstory_agent'],
-            tools=[web_search_tool, serper_tool],
+            tools=[serper_tool],
             verbose=True,
             memory=True,
             llm= llm_instance,
