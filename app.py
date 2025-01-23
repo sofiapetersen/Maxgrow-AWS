@@ -14,10 +14,9 @@ import pdfkit
 from langchain_openai import ChatOpenAI
 from openai import OpenAI
 import requests
-from dotenv import load_dotenv
 
-load_dotenv()
-openai_key = os.getenv("OPENAI_API_KEY")
+
+os.environ["OPENAI_API_KEY"] = "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"
 os.environ["SERPER_API_KEY"] = "966f510dc332f3fc6db2bb39af3e4c90685ccb50" # serper.dev API key
 
 
@@ -29,7 +28,7 @@ serper_tool = SerperDevTool()
 
 gpt_4_mini = ChatOpenAI(
     model = "gpt-4o-mini",
-    openai_api_key=openai_key
+    openai_api_key=os.environ["OPENAI_API_KEY"]
 )
 
 llama = ChatOpenAI(
