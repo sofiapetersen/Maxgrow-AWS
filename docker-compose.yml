@@ -10,3 +10,4 @@ services:
       - ./db:/app/db 
       - ./templates:/app/templates
       - ./static:/app/static  
+  
